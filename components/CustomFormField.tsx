@@ -87,8 +87,6 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             value={field.value as E164Number | undefined}
             onChange={field.onChange}
             className="input-phone"
-            PhoneInputCountryFlag-height = '20px'
-          
           />
         </FormControl>
       );
