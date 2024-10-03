@@ -1,11 +1,14 @@
 import RegisterForm from '@/components/forms/RegisterForm'
+import { getUser } from '@/lib/actions/patient.actions'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 type Props = {}
 
-const Register = (props: Props) => {
+const Register = async ({params: {userId}}: SearchParamProps) => {
+
+  const user = await getUser(userId)
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container my-auto">
@@ -17,7 +20,7 @@ const Register = (props: Props) => {
             alt='patient'
             className="mb-12 h-10 w-fit"
           />
-            <RegisterForm />
+            <RegisterForm user={user} />
           <div className="text-14-regular mt-20 flex justify-between">
             <p className=" justify-items-endtext-dark-600 xl:text-left">
               © 2024 DocDirect
