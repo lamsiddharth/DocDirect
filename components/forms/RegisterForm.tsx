@@ -11,13 +11,8 @@ import { Form, FormControl } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SelectItem } from "@/components/ui/select";
-// import {
-//   Doctors,
-//   GenderOptions,
-//   IdentificationTypes,
-//   PatientFormDefaultValues,
-// } from "@/constants";
-// import { registerPatient } from "@/lib/actions/patient.actions";
+
+import { registerPatient } from "@/lib/actions/patient.action";
 import { PatientFormValidation } from "@/lib/validation";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -25,8 +20,8 @@ import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 // import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
-import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
-import FileUploader from "../ui/FileUploader";
+import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants";
+import {FileUploader} from "../ui/FileUploader";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -35,7 +30,7 @@ const RegisterForm = ({ user }: { user: User }) => {
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
-      // ...PatientFormDefaultValues,
+       ...PatientFormDefaultValues,
       name: user.name,
       email: user.email,
       phone: user.phone,
@@ -87,11 +82,11 @@ const RegisterForm = ({ user }: { user: User }) => {
         privacyConsent: values.privacyConsent,
       };
 
-      // const newPatient = await registerPatient(patient);
+      const newPatient = await registerPatient(patient);
 
-      // if (newPatient) {
-      //   router.push(`/patients/${user.$id}/new-appointment`);
-      // }
+      if (newPatient) {
+        router.push(`/patients/${user.$id}/new-appointment`);
+      }
     } catch (error) {
       console.log(error);
     }

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { createUser } from "@/lib/actions/patient.actions";
+import { createUser } from "@/lib/actions/patient.action";
 import { UserFormValidation } from "@/lib/validation";
 
 import "react-phone-number-input/style.css";
