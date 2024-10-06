@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
 import { createUser } from "@/lib/actions/patient.action";
-import { getAppointmentSchema, UserFormValidation } from "@/lib/validation";
+import { CreateAppointmentSchema, getAppointmentSchema, UserFormValidation } from "@/lib/validation";
 
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
@@ -16,6 +16,7 @@ import SubmitButton from "../SubmitButton";
 import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
+import { createAppointment } from "@/lib/actions/appointment.actions";
 
 export const AppointmentForm = ({
     userId,
@@ -47,18 +48,38 @@ export const AppointmentForm = ({
   const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
     setIsLoading(true);
 
+    let status; 
+    switch(type){
+      case 'schedule':
+        status='scheduled'
+        break;
+      case 'cancel':
+        status = 'cancelled'
+        break;
+      default:
+        status = 'pending'
+        break;  
+    }     
+      
     try {
-      const user = {
-        name: values.name,
-        email: values.email,
-        phone: values.phone,
-      };
+      if(type === 'create' && patientId){
+        const appointmentData = {
+          userId,
+          patient: patientId,
+          primaryPhysician: values.primaryPhysician,
+          schedule: new Date(values.schedule),
+          reason: values.reason || " ",
+          note: values.note,
+          status: status as Status,
+        }
+        const appointment = await createAppointment(appointmentData);
+        if(appointment) {
+          form.reset();
+          router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment.id}`)
+        }
+      }  
 
-      const newUser = await createUser(user);
-
-      if (newUser) {
-        router.push(`/patients/${newUser.$id}/register`);
-      }
+      
     } catch (error) {
       console.log(error);
     }
