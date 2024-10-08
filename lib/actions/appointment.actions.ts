@@ -32,3 +32,11 @@ export const getAppointment = async(appointmentId: string) => {
         console.log(error);
     }
 }
+
+export const getRecentAppointmentList = async() => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
